@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Navbar from './components/Navbar.jsx'
-import Login from './pages/login.jsx'
-import Register from './pages/Register.jsx'
-import Dashboard from './pages/Dashboard.jsx'
-import RoomList from './pages/RoomList.jsx'
-import MyBookings from './pages/MyBookings.jsx'
-import ToastMessage from './components/ToastMessage.jsx'
+import Navbar from './components/Navbar'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Dashboard from './pages/Dashboard'
+import RoomList from './pages/RoomList'
+import MyBookings from './pages/MyBookings'
+import ToastMessage from './components/ToastMessage'
 
 const App = () => {
   return (

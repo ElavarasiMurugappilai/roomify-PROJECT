@@ -13,10 +13,10 @@ const Navbar = () => {
         <Button color="inherit" component={Link} to="/dashboard">Dashboard</Button>
         <Button color="inherit" component={Link} to="/rooms">Rooms</Button>
         <Button color="inherit" component={Link} to="/mybookings">My Bookings</Button>
-         <Button color="inherit" component={Link} to="/Myprofile">My Profile</Button>
       </Toolbar>
     </AppBar>
   )
 }
 
 export default Navbar
+
