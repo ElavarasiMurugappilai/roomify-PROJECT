@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import API from '../utils/api'
-import { Container, Typography, Card, CardContent, Grid, Button } from '@mui/material'
+import {
+  Container, Typography, Card, CardContent,
+  Grid, Button, Box, Chip
+} from '@mui/material'
 
 const AdminRequests = () => {
   const [requests, setRequests] = useState([])
 
   const fetchRequests = async () => {
     try {
-      const { data } = await API.get('/requests')
-      setRequests(data)
+      const res = await API.get('/requests')
+      setRequests(res.data)
     } catch (error) {
       console.error('Error fetching requests:', error)
     }
   }
 
-  const handleUpdate = async (id, status) => {
+  const updateStatus = async (id, status) => {
     try {
       await API.patch(`/requests/${id}/status`, { status })
       alert(`Request ${status}`)
-      fetchRequests()
+      fetchRequests() // refresh after update
     } catch (error) {
-      console.error('Error updating request:', error)
+      console.error('Status update failed:', error)
     }
   }
 
@@ -30,24 +33,43 @@ const AdminRequests = () => {
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>All Room Booking Requests</Typography>
-      <Grid container spacing={2}>
+      <Typography variant="h4" gutterBottom>
+        Admin Panel – Booking Requests
+      </Typography>
+      <Grid container spacing={3}>
         {requests.map((req) => (
           <Grid item xs={12} sm={6} md={4} key={req._id}>
             <Card>
               <CardContent>
-                <Typography><strong>Room:</strong> {req.roomName}</Typography>
-                <Typography><strong>User:</strong> {req.userEmail}</Typography>
+                <Typography variant="h6">{req.roomName}</Typography>
+                <Typography><strong>Email:</strong> {req.userEmail}</Typography>
                 <Typography><strong>Date:</strong> {req.date}</Typography>
                 <Typography><strong>Time:</strong> {req.time}</Typography>
                 <Typography><strong>Purpose:</strong> {req.purpose}</Typography>
-                <Typography><strong>Status:</strong> {req.status}</Typography>
-
+                <Box mt={1}>
+                  <Chip
+                    label={req.status}
+                    color={req.status === 'Accepted' ? 'success' : req.status === 'Rejected' ? 'error' : 'warning'}
+                  />
+                </Box>
                 {req.status === 'Pending' && (
-                  <>
-                    <Button color="success" onClick={() => handleUpdate(req._id, 'Accepted')}>Accept</Button>
-                    <Button color="error" onClick={() => handleUpdate(req._id, 'Rejected')}>Reject</Button>
-                  </>
+                  <Box mt={2}>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => updateStatus(req._id, 'Accepted')}
+                      sx={{ mr: 1 }}
+                    >
+                      Accept
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => updateStatus(req._id, 'Rejected')}
+                    >
+                      Reject
+                    </Button>
+                  </Box>
                 )}
               </CardContent>
             </Card>
